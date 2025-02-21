@@ -1,55 +1,39 @@
-const taskInput = document.getElementById('taskInput');
-const addTaskBtn = document.getElementById('addTaskBtn');
-const taskList = document.getElementById('taskList');
-
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-function renderTasks() {
-    taskList.innerHTML = '';
-    tasks.forEach((task, index) => {
-        const li = document.createElement('li');
-        li.classList.toggle('completed', task.completed);
-
-        const taskText = document.createElement('span');
-        taskText.textContent = task.text;
-        li.appendChild(taskText);
-
-        taskText.addEventListener('click', () => {
-            task.completed = !task.completed;
-            saveTasks();
-            renderTasks();
-        });
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('delete-btn');
-        deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', () => {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
-        });
-        li.appendChild(deleteBtn);
-
-        taskList.appendChild(li);
-    });
-}
-
-function saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-addTaskBtn.addEventListener('click', () => {
-    const taskText = taskInput.value.trim();
-    if (taskText) {
-        const newTask = {
-            text: taskText,
-            completed: false
-        };
-        tasks.push(newTask);
-        taskInput.value = '';
-        saveTasks();
-        renderTasks();
+class Calculator {
+    constructor() {
+        this.result = 0;
     }
-});
 
-renderTasks();
+    add(a, b) {
+        this.result = a + b;
+        return this.result;
+    }
+
+    subtract(a, b) {
+        this.result = a - b;
+        return this.result;
+    }
+
+    multiply(a, b) {
+        this.result = a * b;
+        return this.result;
+    }
+
+    divide(a, b) {
+        if (b === 0) {
+            throw new Error('Cannot divide by zero');
+        }
+        this.result = a / b;
+        return this.result;
+    }
+
+    getResult() {
+        return this.result;
+    }
+}
+
+const calculator = new Calculator();
+
+console.log('Addition: ', calculator.add(5, 3));
+console.log('Subtraction: ', calculator.subtract(5, 3));
+console.log('Multiplication: ', calculator.multiply(5, 3));
+console.log('Division: ', calculator.divide(5, 2));
